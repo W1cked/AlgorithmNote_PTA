@@ -41,7 +41,9 @@
 
 ---
 
-## 归纳与观察
+## 思路
+
+### 观察与归纳
 
 我们观察沙漏发现，图案可以由一个 **上三角** 和一个 **下三角** 构成。
 
@@ -84,7 +86,7 @@
 
 ---
 
-## 基本流程
+### 基本流程
 
 1. 输入一个变量 Number;
 
@@ -115,3 +117,55 @@
      (j <- 0; j < 当前最大底边; j++)
 
 ---
+
+## 代码
+
+```c
+#include<stdio.h>
+#include<math.h>
+
+int main() {
+	
+	int number;
+	char character;
+	scanf("%d %c", &number, &character);
+	
+	int MAXbottom = (int)sqrt(2.0 * (number + 1)) - 1;
+	if(MAXbottom % 2 == 0)
+		MAXbottom--;
+	
+	int usedCount = 0;
+	// Display up triangle
+	for(int currentBottom = MAXbottom; currentBottom > 0; currentBottom -= 2) {
+		// Display space
+		for(int i = 0; i < (MAXbottom - currentBottom) / 2; i++) {
+			printf(" ");
+		}
+		
+		// Display character
+		for(int i = 0; i < currentBottom; i++) {
+			putchar(character);
+			usedCount++;
+		}
+		printf("\n");
+	}
+	
+	// Display down triangle
+	for(int currentBottom = 3; currentBottom <= MAXbottom; currentBottom += 2) {
+		for(int i = (MAXbottom - currentBottom) / 2; i > 0; i--) {
+			printf(" ");
+		}
+			
+		for(int i = 0; i < currentBottom; i++) {
+			putchar(character);
+			usedCount++;
+		}
+		printf("\n");
+	}
+	printf("%d", number - usedCount);
+	
+	return 0;
+}
+
+```
+

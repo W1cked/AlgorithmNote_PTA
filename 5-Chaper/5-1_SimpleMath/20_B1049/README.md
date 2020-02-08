@@ -56,3 +56,72 @@
 其中 **i from 1 to n**;
 
 那么 总和 += 值 * 次数
+
+---
+
+## 代码
+
+### 我最开始写的：
+
+有测试点会超时
+
+```cpp
+/*
+	This source code will run out of time.
+*/
+#include<cstdio>
+
+int main() {
+	
+	int number;
+	scanf("%d", &number);
+	
+	double input[100001];
+	for(int i = 0; i < number; i++) {
+		scanf("%lf", &input[i]);
+	}
+	
+	double sum = 0;
+	for(int i = 0; i < number; i++) {
+		int counter = number - i;
+		int tempLength = number;
+		while(counter) {
+			// Do an operation
+			for(int j = i; j < tempLength; j++) {
+				sum += input[j];
+			}
+			tempLength--;
+			counter--;
+		}
+	}
+	
+	printf("%.2f\n", sum);
+	
+	return 0;
+}
+```
+
+
+
+### 能跑完所以测试点的
+
+```cpp
+#include<cstdio>
+
+int main() {
+	
+	int number;
+	scanf("%d", &number);
+	
+	double sum = 0;
+	for(int i = 1; i <= number; i++) {
+		double value;
+		scanf("%lf", &value);
+		sum += value * (number - i + 1) * i;
+	}
+	printf("%.2f", sum);
+	
+	return 0;
+}
+```
+

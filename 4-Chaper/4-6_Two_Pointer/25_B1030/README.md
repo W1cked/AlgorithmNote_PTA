@@ -53,6 +53,46 @@
 
 
 
-## 注意
+### 注意
 
 题目给定的判别式 **M <= mp** 中的 **mp** 可能会大过int型能承受的范围，所以数组最好用long long int 型来存。
+
+---
+
+## 代码
+
+```cpp
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int main() {
+	int number, p;
+	scanf("%d%d", &number, &p);
+	
+	long long int A[100001];
+	for(int i = 0; i < number; i++) {
+		scanf("%lld", &A[i]);
+	}
+	
+	sort(A, A + number);
+	
+	// Count the number of perfect array
+	int firstIndex = 0, lastIndex = 0, counter = 0;
+	while(firstIndex < number && lastIndex < number) {
+		// Keep moving the lastIndex till the end
+		while(lastIndex < number && A[lastIndex] <= A[firstIndex] * p) {
+			lastIndex++;
+		}
+		if(counter < lastIndex - firstIndex) {	// Update the counter
+			counter = lastIndex - firstIndex;
+		}
+		firstIndex++;
+	}
+	
+	printf("%d", counter);
+	
+	return 0;
+}
+```
+

@@ -36,3 +36,60 @@
 2. 从单价高的月饼开始枚举
    1. 如果 库存量 < 需求量，则该类月饼全卖掉；此时 需求量 = 需求量 - 该类月饼库存量，收益值 += 该类月饼总销售量
    2. 如果 库存量 > 需求量，则要多少给多少；此时 收益值 = 需求量 * 月饼单价，而后需求量减为0
+
+---
+
+## 代码
+
+```cpp
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+struct mooncake {
+	double store;
+	double price;
+	double totalSell;
+}cake[1001];
+
+bool cmp(mooncake a, mooncake b) {
+	return a.price > b.price;
+}
+
+int main() {
+	int number;
+	double needNumber;
+	scanf("%d %lf", &number, &needNumber);
+	
+	// Input the data
+	for(int i = 0; i < number; i++) {
+		scanf("%lf", &cake[i].store);
+	}
+	for(int i = 0; i < number; i++) {
+		scanf("%lf", &cake[i].totalSell);
+		cake[i].price = cake[i].totalSell / cake[i].store;
+	}
+	
+	// Sort the price, high to low
+	sort(cake, cake + number, cmp);
+	
+	// Compute the earnings
+	double earnings = 0;
+	for(int i = 0; i < number; i++) {
+		if(cake[i].store <= needNumber) {
+			needNumber = needNumber - cake[i].store;
+			earnings += cake[i].totalSell;
+		}
+		else {
+			earnings = earnings + (cake[i].price * needNumber);
+			break;
+		}
+	}
+	
+	// Display the result
+	printf("%.2f\n", earnings);
+	
+	return 0;
+}
+```
+

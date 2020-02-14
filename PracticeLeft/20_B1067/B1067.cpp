@@ -9,7 +9,7 @@ int main() {
 	for(int i = 0; i < tryTimes; i++) {
 		char input[1001] = {'\0'};
         getchar();      /* Absort the '\n' */
-		scanf("%[^\n]", input);
+		scanf("%[^\n]s", input);
 		
         if(strcmp(input, "#") == 0) {
             return 0;

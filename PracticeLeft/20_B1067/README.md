@@ -95,7 +95,7 @@ int main(void)
     char input[128];
 
 	printf("Enter a string: "); 
-	scanf("%[A-Z]", str);	/* This is a scanset format */
+	scanf("%[A-Z]s", str);	/* This is a scanset format */
     scanf("%s", input);
 
 	printf("scanset: %s\n", str);
@@ -126,14 +126,10 @@ input: eKS_For_GeeKs
 
 ### Example2
 
-$$
-
-$$
-
 > If first character of scanset is ‘^’, then the specifier will stop reading after first occurrence of that character. For example, given below scanset will read all characters but stops after first occurrence of ‘o’
 >
 > ```c
-> scanf("%[^o]", input);
+> scanf("%[^o]s", input);
 > ```
 >
 > 
@@ -149,7 +145,7 @@ int main(void)
     char input[128];
 
 	printf("Enter a string: "); 
-	scanf("%[^o]", scanset);
+	scanf("%[^o]s", scanset);
     scanf("%s", input);
 
 	printf("scanset: %s\n", scanset);
@@ -181,7 +177,7 @@ input: or___Geeks
 即：
 
 ```c
-scanf("%[^\n]", input);
+scanf("%[^\n]s", input);
 ```
 
 由此我们可以得到本题的AC参考代码
@@ -200,7 +196,7 @@ int main() {
 	for(int i = 0; i < tryTimes; i++) {
 		char input[1001] = {'\0'};
         getchar();			/* Absort the '\n' */
-		scanf("%[^\n]", input);
+		scanf("%[^\n]s", input);
 		
         if(strcmp(input, "#") == 0) {
             return 0;

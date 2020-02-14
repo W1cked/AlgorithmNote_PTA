@@ -1,79 +1,104 @@
-#include<stdio.h>
+#include<cstdio>
+#include<cstring>
 
 struct Problem {
+	int itemNum;
 	int score;
-	int number;
 	int correctNum;
-	char Item[101];
+	char answer[6];
+	Problem() {
+		for (int i = 0; i < 6; i++)
+			answer[i] = { '\0' };
+	}
 };
 
 struct Student {
-	int itemNumber;
-	int correctNum;
 	int score;
-	
+	int itemNum;
+	int correctNum;
 	Student() {
-		itemNumber = 0;
-		correctNum = 0;
 		score = 0;
+		itemNum = 0;
+		correctNum = 0;
 	}
 };
 
 int main() {
-	int studentNumber, problemNumber;
-	char tempChar;
-	scanf("%d%d", &studentNumber, &problemNumber);
-	
-	Problem problem[problemNumber];
-	for(int i = 0; i < problemNumber; i++) {
-		scanf("%d%d%d", &problem[i].score, &problem[i].number, &problem[i].correctNum);
+	int stuNum, problemNum;
+	scanf("%d%d", &stuNum, &problemNum);
+
+	/** Read the problem information */
+	Problem* pro = new Problem[problemNum];
+	for (int i = 0; i < problemNum; i++) {
+		scanf("%d%d%d", &pro[i].score, &pro[i].itemNum, &pro[i].correctNum);
+
 		int temp = 0;
-		while(temp != problem[i].correctNum) {
-			tempChar = getchar();
-			if(tempChar >= 'a' && tempChar <= 'z')
-				problem[i].Item[temp++] = tempChar;
-		}
+		while (temp != pro[i].correctNum)
+			scanf(" %c", &pro[i].answer[temp++]);
 	}
-	
-	Student stu[studentNumber];
-	for(int k = 0; k < studentNumber; k++) {
-		for(int j = 0; j < problemNumber; j++) {
-			while((tempChar = getchar()) != ' ') {
-				if(tempChar >= '0' && tempChar <= '0') {
-					stu[k].itemNumber = tempChar -  '0';
-					if(problem[j].correctNum != stu[k].itemNumber) {
-						stu[k].score += 0;
-						break;
-					}
-				}
+
+	int* statistics = new int[problemNum];
+	for (int i = 0; i < problemNum; i++) {	/* Initialize the statistics array */
+		statistics[i] = 0;
+	}
+
+	/** Read the student information */
+	Student* stu = new Student[stuNum];
+	int wrongCounter = 0;
+	for (int i = 0; i < stuNum; i++) {
+		char stuAns[10001] = {'\0'};
+		getchar();					/* Absort the '\n' */
+		scanf("%[^\n]", stuAns);
+		
+		for (int j = 0; j < problemNum; j++) {
+			stu[i].itemNum = 0;
+			stu[i].correctNum = 0;
+			sscanf(stuAns, "(%d", &stu[i].itemNum);
+			if (stu[i].itemNum != pro[j].correctNum) {
+				stu[i].score += 0;
+				statistics[j]++;
+				wrongCounter++;
+				continue;
 			}
-			
-			/** Input the item and check the answer */
-			for(int i = 0; i < stu[k].itemNumber; i++) {
-				while((tempChar = getchar()) != ')') {
-					if(tempChar >= 'a' && tempChar <= 'z') {
-						bool flag = false;	// Assume this item is wrong
-						for(int x = 0; x < problem[j].correctNum; x++) {
-							if(tempChar == problem[j].Item[x]) {
-								flag = true;
-								stu[k].correctNum++;
-								break;
-							}
-						}
-						if(flag)
-							continue;
-						else {
-							stu[k].score += 0;
+
+			char stuItem[101] = {'\0'};	/* Read the student's each item */
+			sscanf(stuAns, "%[^')']", stuItem);
+			for (int k = 0; k < strlen(stuItem); k++) {
+				if (stuItem[k] >= 'a' && stuItem[k] <= 'z') {
+					for (int x = 0; x < pro[j].correctNum; x++) {
+						if (stuItem[k] == pro[j].answer[x]) {
+							stu[i].correctNum++;
 							break;
 						}
 					}
-				}	
+				}
 			}
-			if(stu[k].correctNum == stu[k].itemNumber)
-				stu[k].score += problem[j].score;
+			strcpy(stuAns, stuAns + (stu[i].itemNum * 2 + 4));    /* Pointer move right to next problem */
+			if (stu[i].correctNum == pro[j].correctNum)
+				stu[i].score += pro[j].score;
+			else {
+				stu[i].score += 0;
+				statistics[j]++;
+				wrongCounter++;
+			}
 		}
-		printf("%d\n", stu[k].score);
+		printf("%d\n", stu[i].score);
+	}
+
+	int MAX = 0;
+	for (int i = 0; i < problemNum; i++) {
+		if (statistics[i] > MAX)  MAX = statistics[i];
 	}
 	
+	if (wrongCounter) {
+		printf("%d", MAX);
+		for (int i = 0; i < problemNum; i++)
+			if (statistics[i] == MAX)  printf(" %d", i + 1);
+	}
+	else
+		printf("Too simple\n");
+
+	delete[] pro;
+	delete[] stu;
 	return 0;
 }

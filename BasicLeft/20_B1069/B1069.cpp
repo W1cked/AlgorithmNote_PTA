@@ -1,10 +1,11 @@
+/* Test point4 didn't pass */
 #include<cstdio>
 #include<iostream>
 #include<vector>
+#include<algorithm>
 using namespace std;
 
 int main() {
-	
 	int totalNumber, interval, champion;
 	scanf("%d%d%d", &totalNumber, &interval, &champion);
 	
@@ -13,7 +14,6 @@ int main() {
 		return 0;
 	} 
 	
-	/** Read the data */
 	int counter = 0;
 	vector<string> rewardName;
 	for(int i = 0; i < totalNumber; i++) {
@@ -26,22 +26,16 @@ int main() {
 			counter++;
 			continue;
 		}
-		if(counter) {
-			counter++; 
-			if(counter % interval == 1) {
+		if(counter) { 
+			if((++counter) % interval == 1) {
 				/* Do you have already take the reward? */
-				bool sameFlag = false;
-				for(vector<string>::iterator it = rewardName.begin(); it != rewardName.end(); it++) {
-					if(*it == user) {
-						counter--;
-						sameFlag = true;
-						break;
-					}
-				}
-				if(sameFlag == false) {
-					cout << user << endl;
+				vector<string>::iterator it = find(rewardName.begin(), rewardName.end(), user);
+				if(it == rewardName.end()) {	// This guy didn't appear in the list
 					rewardName.push_back(user);
+					cout << user << endl;
 				}
+				else
+					counter--;
 			}
 		}	
 	}

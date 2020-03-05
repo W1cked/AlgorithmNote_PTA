@@ -1,12 +1,10 @@
 #include<cstdio>
-#include<iostream>
 #include<cstring>
-using namespace std;
 
 int main() {
 	
 	char str[81];
-	cin.getline(str, 81);
+	scanf("%[^\n]s", str);
 	
 	int length = strlen(str);
 	int row = 0, col = 0;

@@ -58,7 +58,7 @@ int main() {
 			ia = i;
 		}
 		if(handB[i] > handB[ia]) {
-			ia = i;
+			ib = i;
 		}
 	}
 	printf("%c %c", mp[ia], mp[ib]);
